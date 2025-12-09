@@ -1,11 +1,57 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Creative Georgia Backend API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel 11 backend API with Filament CMS for Creative Georgia platform.
+
+## 🚀 Quick Start
+
+### Local Development
+
+```bash
+# Install dependencies
+composer install
+
+# Create database
+touch database/database.sqlite
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Run migrations
+php artisan migrate
+
+# Seed database
+php artisan db:seed
+
+# Start server
+php artisan serve
+```
+
+### FTP Hosting Deployment
+
+**📖 See [FTP-SETUP.md](FTP-SETUP.md) for quick setup guide**
+
+**📋 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions**
+
+**✅ See [DEPLOYMENT-CHECKLIST.md](DEPLOYMENT-CHECKLIST.md) for deployment checklist**
+
+## 📦 Features
+
+- Laravel 11.x API
+- Filament 4.x Admin Panel
+- SQLite Database (ready for FTP hosting)
+- Document Generation (Word & Excel)
+- Multi-language Support (Georgian/English)
+- RESTful API Endpoints
+- CORS Configuration
+
+## 🔗 Related Repositories
+
+- Frontend: [creative-frontend](https://github.com/roltex/creative-frontend)
+
+---
+
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 ## About Laravel
 
