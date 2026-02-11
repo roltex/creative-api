@@ -9,7 +9,7 @@ class Slider extends Model
 {
     use HasTranslations;
 
-    public $translatable = ['title', 'subtitle', 'category'];
+    public $translatable = ['title', 'subtitle', 'category', 'button_text'];
 
     protected $fillable = [
         'title', 'subtitle', 'category', 'image', 'link', 'button_text', 'order', 'is_active', 'location'

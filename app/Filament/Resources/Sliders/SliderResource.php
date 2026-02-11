@@ -52,6 +52,10 @@ class SliderResource extends Resource
                                 Forms\Components\TextInput::make('category.ka')
                                     ->label('Category')
                                     ->maxLength(255),
+
+                                Forms\Components\TextInput::make('button_text.ka')
+                                    ->label('Button Text')
+                                    ->maxLength(255),
                             ]),
                         
                         Tabs\Tab::make('English')
@@ -68,6 +72,10 @@ class SliderResource extends Resource
                                 Forms\Components\TextInput::make('category.en')
                                     ->label('Category')
                                     ->maxLength(255),
+
+                                Forms\Components\TextInput::make('button_text.en')
+                                    ->label('Button Text')
+                                    ->maxLength(255),
                             ]),
                     ])
                     ->columnSpanFull(),
@@ -83,11 +91,7 @@ class SliderResource extends Resource
                     ->columnSpanFull(),
                 
                 Forms\Components\TextInput::make('link')
-                    ->label('Link URL')
-                    ->url()
-                    ->maxLength(255),
-                
-                Forms\Components\TextInput::make('button_text')
+                    ->label('Button Link (URL or path, e.g. /competitions or https://...)')
                     ->maxLength(255),
                 
                 Forms\Components\Select::make('location')
