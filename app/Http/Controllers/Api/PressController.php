@@ -123,12 +123,11 @@ class PressController extends Controller
             $pressArray['title'] = ['ka' => '', 'en' => ''];
         }
         
-        // Transform media_name to mediaName
+        // Transform media_name to mediaName (translatable object)
         if ($rawMediaName) {
-            $translatableMediaName = $parseTranslatable($rawMediaName);
-            $pressArray['mediaName'] = $translatableMediaName['ka'] ?: $translatableMediaName['en'] ?: '';
+            $pressArray['mediaName'] = $parseTranslatable($rawMediaName);
         } else {
-            $pressArray['mediaName'] = '';
+            $pressArray['mediaName'] = ['ka' => '', 'en' => ''];
         }
         
         // Transform snake_case to camelCase for frontend compatibility
