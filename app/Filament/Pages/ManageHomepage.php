@@ -13,8 +13,12 @@ class ManageHomepage extends Page
     protected static ?string $navigationIcon = 'heroicon-o-home';
     protected static ?string $navigationLabel = 'მთავარი გვერდი';
     protected static ?string $title = 'მთავარი გვერდის მართვა';
-    protected static ?string $navigationGroup = 'საიტის პარამეტრები';
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'საიტის პარამეტრები';
+    }
 
     protected static string $view = 'filament.pages.manage-homepage';
 
