@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
     public function index()
     {
+        $contactData = $this->getContactFromPage();
+
         $settings = [
             'site' => [
                 'name' => [
@@ -24,18 +27,7 @@ class SettingController extends Controller
                     'en' => 'Creative Georgia is an organization supporting the development of Georgian creative industries.'
                 ]
             ],
-            'contact' => [
-                'email' => 'info@creative-georgia.ge',
-                'phone' => '+995 32 2 123 456',
-                'address' => [
-                    'ka' => 'თბილისი, რუსთაველის გამზირი 42',
-                    'en' => '42 Rustaveli Avenue, Tbilisi, Georgia'
-                ],
-                'working_hours' => [
-                    'ka' => 'ორშაბათი-პარასკევი: 09:00-18:00',
-                    'en' => 'Monday-Friday: 09:00-18:00'
-                ]
-            ],
+            'contact' => $contactData,
             'social' => [
                 'facebook' => 'https://facebook.com/creativegeorgia',
                 'instagram' => 'https://instagram.com/creativegeorgia',
@@ -97,5 +89,60 @@ class SettingController extends Controller
             'success' => true,
             'data' => $settings['data'][$group]
         ]);
+    }
+
+    private function getContactFromPage(): array
+    {
+        $fallback = [
+            'email' => 'info@creative-georgia.ge',
+            'phone' => '+995 32 2 123 456',
+            'address' => [
+                'ka' => 'თბილისი, რუსთაველის გამზირი 42',
+                'en' => '42 Rustaveli Avenue, Tbilisi, Georgia'
+            ],
+            'working_hours' => [
+                'ka' => 'ორშაბათი-პარასკევი: 09:00-18:00',
+                'en' => 'Monday-Friday: 09:00-18:00'
+            ]
+        ];
+
+        try {
+            $contactPage = Page::where('template', 'contact')
+                ->where('status', 'published')
+                ->first();
+
+            if (!$contactPage) {
+                return $fallback;
+            }
+
+            $parseTranslatable = function ($value) {
+                if (empty($value)) return ['ka' => '', 'en' => ''];
+                if (is_array($value) && (isset($value['ka']) || isset($value['en']))) {
+                    return ['ka' => $value['ka'] ?? '', 'en' => $value['en'] ?? ''];
+                }
+                $decoded = is_string($value) ? json_decode($value, true) : $value;
+                if (is_array($decoded)) {
+                    return ['ka' => $decoded['ka'] ?? $decoded['ge'] ?? '', 'en' => $decoded['en'] ?? ''];
+                }
+                return ['ka' => (string) $value, 'en' => (string) $value];
+            };
+
+            $address = $contactPage->contact_address
+                ? $parseTranslatable($contactPage->contact_address)
+                : $fallback['address'];
+
+            $workingHours = $contactPage->office_hours_text
+                ? $parseTranslatable($contactPage->office_hours_text)
+                : $fallback['working_hours'];
+
+            return [
+                'email' => $contactPage->contact_email ?: $fallback['email'],
+                'phone' => $contactPage->contact_phone ?: $fallback['phone'],
+                'address' => $address,
+                'working_hours' => $workingHours,
+            ];
+        } catch (\Exception $e) {
+            return $fallback;
+        }
     }
 }
