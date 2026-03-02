@@ -26,7 +26,9 @@ return [
         'http://127.0.0.1:5173',
         'https://creative-georgia.ge',
         'https://www.creative-georgia.ge',
-        'https://creative.buildweb.dev'
+        'https://creativegeorgia.ge',
+        'https://www.creativegeorgia.ge',
+        'https://creative.buildweb.dev',
     ],
 
     'allowed_origins_patterns' => [],
