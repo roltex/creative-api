@@ -2,15 +2,17 @@
 
 namespace App\Filament\Pages;
 
+use BackedEnum;
 use App\Models\HomepageSetting;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Support\Icons\Heroicon;
 
 class ManageHomepage extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
     protected static ?string $navigationLabel = 'მთავარი გვერდი';
     protected static ?string $title = 'მთავარი გვერდის მართვა';
     protected static ?int $navigationSort = 1;
