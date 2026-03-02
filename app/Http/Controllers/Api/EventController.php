@@ -248,8 +248,8 @@ class EventController extends Controller
             $eventArray['location'] = $translatableLocation['ka'] ?: $translatableLocation['en'];
         }
         
-        $eventArray['startAt'] = $eventArray['start_date'] ?? null;
-        $eventArray['endAt'] = $eventArray['end_date'] ?? null;
+        $eventArray['startAt'] = $event->start_date ? $event->start_date->format('Y-m-d\TH:i:s') : null;
+        $eventArray['endAt'] = $event->end_date ? $event->end_date->format('Y-m-d\TH:i:s') : null;
         $eventArray['isFeatured'] = $eventArray['is_featured'] ?? false;
         $eventArray['createdAt'] = $eventArray['created_at'] ?? null;
         $eventArray['updatedAt'] = $eventArray['updated_at'] ?? null;
