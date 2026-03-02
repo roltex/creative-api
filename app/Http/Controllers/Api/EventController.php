@@ -253,6 +253,8 @@ class EventController extends Controller
         $eventArray['isFeatured'] = $eventArray['is_featured'] ?? false;
         $eventArray['createdAt'] = $eventArray['created_at'] ?? null;
         $eventArray['updatedAt'] = $eventArray['updated_at'] ?? null;
+
+        unset($eventArray['start_date'], $eventArray['end_date'], $eventArray['is_featured'], $eventArray['created_at'], $eventArray['updated_at']);
         
         return $eventArray;
     }
