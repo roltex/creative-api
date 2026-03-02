@@ -17,12 +17,12 @@ class ManageHomepage extends Page
     protected static ?string $title = 'მთავარი გვერდის მართვა';
     protected static ?int $navigationSort = 1;
 
+    protected string $view = 'filament.pages.manage-homepage';
+
     public static function getNavigationGroup(): ?string
     {
         return 'საიტის პარამეტრები';
     }
-
-    protected static string $view = 'filament.pages.manage-homepage';
 
     public ?array $data = [];
 
