@@ -13,8 +13,9 @@ class MenuController extends Controller
     {
         $menus = Menu::with(['items' => function ($query) {
             $query->whereNull('parent_id')
+                  ->where('is_active', true)
                   ->with(['children' => function ($childQuery) {
-                      $childQuery->orderBy('order');
+                      $childQuery->where('is_active', true)->orderBy('order');
                   }])
                   ->orderBy('order');
         }])->get();
@@ -30,8 +31,9 @@ class MenuController extends Controller
         $menu = Menu::where('location', $location)
             ->with(['items' => function ($query) {
                 $query->whereNull('parent_id')
+                      ->where('is_active', true)
                       ->with(['children' => function ($childQuery) {
-                          $childQuery->orderBy('order');
+                          $childQuery->where('is_active', true)->orderBy('order');
                       }])
                       ->orderBy('order');
             }])
