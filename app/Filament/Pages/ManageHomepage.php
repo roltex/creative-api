@@ -4,20 +4,27 @@ namespace App\Filament\Pages;
 
 use BackedEnum;
 use App\Models\HomepageSetting;
+use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\EmbeddedSchema;
+use Filament\Schemas\Components\Form;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
+/**
+ * @property-read Schema $form
+ */
 class ManageHomepage extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHome;
     protected static ?string $navigationLabel = 'მთავარი გვერდი';
     protected static ?string $title = 'მთავარი გვერდის მართვა';
     protected static ?int $navigationSort = 1;
-
-    protected string $view = 'filament.pages.manage-homepage';
 
     public static function getNavigationGroup(): ?string
     {
@@ -58,16 +65,21 @@ class ManageHomepage extends Page
         ]);
     }
 
-    public function form(Form $form): Form
+    public function defaultForm(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make('Homepage Settings')
+        return $schema->statePath('data');
+    }
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Tabs::make('Homepage Settings')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('სექციების ხილვადობა')
+                        Tabs\Tab::make('სექციების ხილვადობა')
                             ->icon('heroicon-o-eye')
                             ->schema([
-                                Forms\Components\Section::make('აირჩიეთ რომელი სექციები გამოჩნდეს მთავარ გვერდზე')
+                                Section::make('აირჩიეთ რომელი სექციები გამოჩნდეს მთავარ გვერდზე')
                                     ->schema([
                                         Forms\Components\Toggle::make('show_hero_banner')
                                             ->label('ჰერო ბანერი')
@@ -97,10 +109,10 @@ class ManageHomepage extends Page
                                     ->columns(2),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('სექციების სათაურები')
+                        Tabs\Tab::make('სექციების სათაურები')
                             ->icon('heroicon-o-pencil')
                             ->schema([
-                                Forms\Components\Section::make('კონკურსების სექცია')
+                                Section::make('კონკურსების სექცია')
                                     ->schema([
                                         Forms\Components\TextInput::make('competitions_title_ka')
                                             ->label('სათაური (ქართულად)')
@@ -111,7 +123,7 @@ class ManageHomepage extends Page
                                     ])
                                     ->columns(2),
 
-                                Forms\Components\Section::make('სიახლეების სექცია')
+                                Section::make('სიახლეების სექცია')
                                     ->schema([
                                         Forms\Components\TextInput::make('news_title_ka')
                                             ->label('სათაური (ქართულად)')
@@ -122,7 +134,7 @@ class ManageHomepage extends Page
                                     ])
                                     ->columns(2),
 
-                                Forms\Components\Section::make('ღონისძიებების სექცია')
+                                Section::make('ღონისძიებების სექცია')
                                     ->schema([
                                         Forms\Components\TextInput::make('events_title_ka')
                                             ->label('სათაური (ქართულად)')
@@ -133,7 +145,7 @@ class ManageHomepage extends Page
                                     ])
                                     ->columns(2),
 
-                                Forms\Components\Section::make('წარმატებული ისტორიების სექცია')
+                                Section::make('წარმატებული ისტორიების სექცია')
                                     ->schema([
                                         Forms\Components\TextInput::make('success_stories_title_ka')
                                             ->label('სათაური (ქართულად)')
@@ -145,10 +157,10 @@ class ManageHomepage extends Page
                                     ->columns(2),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('CTA სექცია')
+                        Tabs\Tab::make('CTA სექცია')
                             ->icon('heroicon-o-megaphone')
                             ->schema([
-                                Forms\Components\Section::make('ტექსტი')
+                                Section::make('ტექსტი')
                                     ->schema([
                                         Forms\Components\TextInput::make('cta_title_ka')
                                             ->label('სათაური (ქართულად)')
@@ -165,7 +177,7 @@ class ManageHomepage extends Page
                                     ])
                                     ->columns(2),
 
-                                Forms\Components\Section::make('ღილაკი')
+                                Section::make('ღილაკი')
                                     ->schema([
                                         Forms\Components\TextInput::make('cta_button_text_ka')
                                             ->label('ღილაკის ტექსტი (ქართულად)'),
@@ -178,7 +190,7 @@ class ManageHomepage extends Page
                                     ])
                                     ->columns(2),
 
-                                Forms\Components\Section::make('სტატისტიკა')
+                                Section::make('სტატისტიკა')
                                     ->schema([
                                         Forms\Components\Repeater::make('cta_stats')
                                             ->label('სტატისტიკის ელემენტები')
@@ -207,8 +219,27 @@ class ManageHomepage extends Page
                             ]),
                     ])
                     ->columnSpanFull(),
-            ])
-            ->statePath('data');
+            ]);
+    }
+
+    public function content(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                $this->getFormContentComponent(),
+            ]);
+    }
+
+    public function getFormContentComponent(): Form
+    {
+        return Form::make([EmbeddedSchema::make('form')])
+            ->id('form')
+            ->livewireSubmitHandler('save')
+            ->footer([
+                Actions::make($this->getFormActions())
+                    ->alignment('start')
+                    ->key('form-actions'),
+            ]);
     }
 
     public function save(): void
@@ -246,7 +277,7 @@ class ManageHomepage extends Page
     protected function getFormActions(): array
     {
         return [
-            Forms\Components\Actions\Action::make('save')
+            Action::make('save')
                 ->label('შენახვა')
                 ->submit('save'),
         ];
